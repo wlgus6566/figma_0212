@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Figma to React Styled Components</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<h2>Figma to React Styled Components</h2>
+<button id="convert">Styled Components 변환</button>
+<pre id="output"></pre>
+
+<script>
+    document.getElementById('convert').onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'convert' } }, '*');
+    };
+
+    window.onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+        if (msg.type === 'reactStyledCode') {
+            document.getElementById('output').textContent = msg.code;
+        } else if (msg.type === 'error') {
+            alert(msg.message);
+        }
+    };
+</script>
+</body>
+</html>
