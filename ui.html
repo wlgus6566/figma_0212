@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Figma to React Styled Components</title>
+    <title>Figma to HTML + CSS</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,12 +24,40 @@
             white-space: pre-wrap;
             overflow-x: auto;
         }
+        .tab-container {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab {
+            padding: 8px 12px;
+            cursor: pointer;
+            background: #ddd;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: #007aff;
+            color: white;
+        }
+        .code-output {
+            display: none;
+        }
+        .code-output.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
-<h2>Figma to React Styled Components</h2>
-<button id="convert">Styled Components 변환</button>
-<pre id="output"></pre>
+<h2>Figma to HTML + CSS</h2>
+<button id="convert">HTML + CSS 변환</button>
+
+<div class="tab-container">
+    <div class="tab active" id="htmlTab">HTML</div>
+    <div class="tab" id="cssTab">CSS</div>
+</div>
+
+<pre id="htmlOutput" class="code-output active"></pre>
+<pre id="cssOutput" class="code-output"></pre>
 
 <script>
     document.getElementById('convert').onclick = () => {
@@ -38,12 +66,28 @@
 
     window.onmessage = (event) => {
         const msg = event.data.pluginMessage;
-        if (msg.type === 'reactStyledCode') {
-            document.getElementById('output').textContent = msg.code;
+        if (msg.type === 'htmlCSSCode') {
+            document.getElementById('htmlOutput').textContent = msg.html;
+            document.getElementById('cssOutput').textContent = msg.css;
         } else if (msg.type === 'error') {
             alert(msg.message);
         }
     };
+
+    // 탭 전환 기능
+    document.getElementById('htmlTab').addEventListener('click', function () {
+        document.getElementById('htmlOutput').classList.add('active');
+        document.getElementById('cssOutput').classList.remove('active');
+        document.getElementById('htmlTab').classList.add('active');
+        document.getElementById('cssTab').classList.remove('active');
+    });
+
+    document.getElementById('cssTab').addEventListener('click', function () {
+        document.getElementById('cssOutput').classList.add('active');
+        document.getElementById('htmlOutput').classList.remove('active');
+        document.getElementById('cssTab').classList.add('active');
+        document.getElementById('htmlTab').classList.remove('active');
+    });
 </script>
 </body>
 </html>
